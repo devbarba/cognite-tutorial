@@ -1,26 +1,104 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { Asset } from '@cognite/sdk/dist/src';
+import React, { useEffect, useState } from 'react';
+import { useAuth } from './contexts/AuthContext';
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
+    const [search, setSearch] = useState<string>('');
+    const [assets, setAssets] = useState<Asset[]>({} as Asset[]);
+
+    const {
+        handleAuthenticate,
+        client
+    } = useAuth();
+
+    useEffect(() => {
+        handleAuthenticate();
+    }, []);
+
+    useEffect(() => {
+        async function getAssets() {
+            try {
+                const assets = await client.assets?.list().autoPagingToArray({ limit: 10 });
+                setAssets(assets);
+            } catch(err) {
+                console.log(err);
+            }
+        }
+
+        if (client) getAssets();
+    }, [client]);
+
+    async function handleSearch() {
+        const newSearch = await client.assets.search({
+            search: {
+                query: search
+            }
+        });
+
+        setAssets(newSearch);
+    }
+
+    function renderAssets() {
+        return (
+            <table id='assets'>
+                <tr key={0}>
+                    <th>ID</th>
+                    <th>Asset</th>
+                    <th>Description</th>
+                </tr>
+                {
+                    assets.map((asset, idx) => {
+                        return (
+                            <tr key={idx + 1}>
+                                <td>{asset.id}</td>
+                                <td>{asset.name}</td>
+                                <td>{asset.description}</td>
+                            </tr>
+                        )
+                    })
+                }
+
+            </table>
+        )
+    }
+
+    return (
+        <div
+            style={{
+                display: 'flex',
+                flexDirection: 'column',
+                justifyContent: 'center',
+                alignItems: 'center'
+            }}
         >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+            <div
+                style={{
+                    width: '100%',
+                    marginBottom: '2rem',
+                    background: '#CCC',
+                    display: 'flex',
+                    justifyContent: 'center'
+                }}
+            >
+                <input
+                    type="text"
+                    value={search}
+                    placeholder='Search by the asset name'
+                    onChange={(e: React.ChangeEvent<HTMLInputElement>) => {
+                        setSearch(e.target.value);
+                        handleSearch();
+                    }}
+                    style={{
+                        width: '40%'
+                    }}
+                />
+            </div>
+
+            <div>
+                {assets && assets.length > 0 && renderAssets()}
+            </div>
+        </div>
+    );
 }
 
 export default App;
