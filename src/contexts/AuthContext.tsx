@@ -23,7 +23,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
                 appId: 'Lohika/Cognite Onboarding',
                 project: 'publicdata',
                 apiKeyMode: true,
-                getToken: () => Promise.resolve('Put key Here')
+                getToken: () => Promise.resolve('OWIyZWEwNjctMDFmNy00MjI0LWE5NDctYmRjMTcwYTU0Y2Jj')
             });
     
             clientAuth.authenticate();

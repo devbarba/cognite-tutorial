@@ -13,7 +13,7 @@ function App() {
 
     useEffect(() => {
         handleAuthenticate();
-    }, []);
+    }, [handleAuthenticate]);
 
     useEffect(() => {
         async function getAssets() {
@@ -53,6 +53,7 @@ function App() {
                                 <td>{asset.id}</td>
                                 <td>{asset.name}</td>
                                 <td>{asset.description}</td>
+                                <td>{asset.rootId}</td>
                             </tr>
                         )
                     })
@@ -82,6 +83,7 @@ function App() {
             >
                 <input
                     type="text"
+                    id="test"
                     value={search}
                     placeholder='Search by the asset name'
                     onChange={(e: React.ChangeEvent<HTMLInputElement>) => {

@@ -1,0 +1,24 @@
+{
+    "devteam": [
+      {
+        "name": "Harbs",
+        "department": "Information Technology",
+        "country" : "India"
+      },
+      {
+        "name": "Krish",
+        "department": "Computer Engineering",
+        "country" : "Brazil"
+      },
+      {
+        "name": "Pires",
+        "department": "Information Technology",
+        "country" : "Brazil"
+      },
+      {
+        "name": "Ornellas",
+        "department": "Information Technology",
+        "country" : "Brazil"
+      }
+    ]
+  }
